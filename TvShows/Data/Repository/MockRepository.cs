@@ -3,7 +3,7 @@ using TvShows.Models;
 
 namespace TvShows.Data.Repository
 {
-    public class MockRepository : Interpository
+    public class MockRepository : IRepository
 
     {
     private readonly TvShowDbContext _dbContext;

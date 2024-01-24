@@ -16,9 +16,17 @@ namespace TvShows.Controllers
         }
 
         [HttpGet]
-        public List<TvShow> GetAllTvShows()
+        public ActionResult<List<TvShow>> GetAllTvShows()
         {
-            return _repo.GetAllTvShows();
+            try
+            {
+                var tvShows = _repo.GetAllTvShows();
+                return Ok(tvShows);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpGet]

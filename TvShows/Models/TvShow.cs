@@ -7,7 +7,5 @@ public class TvShow
     public int Year { get; set; }
     public List<Actor> Actors { get; set; }
     public String Genre { get; set; }
-    
-    public List<ActorTvShow> ActorTvShows { get; set; }
 
 }
