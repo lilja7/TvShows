@@ -9,4 +9,6 @@ public class Actor
     public List<TvShow> TvShows { get; set; }
     
     public int DateOfBirth { get; set; }
+    
+    public List<ActorTvShow> ActorTvShows { get; set; }
 }

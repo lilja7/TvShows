@@ -3,28 +3,55 @@ using TvShows.Models;
 
 namespace TvShows.Data.Repository
 {
-    public class MockRepository
+    public class MockRepository : Interpository
+
     {
-        public List<TvShow> TvShows { get; } = new List<TvShow>()
-        {
-            new TvShow() { Genre = "FBi", id = 1, year = 2005, Name = "Criminal Minds" },
-            new TvShow() { Genre = "Crime", id = 2, year = 2000, Name = "CSI" }
-        };
+    private readonly TvShowDbContext _dbContext;
 
-        public List<Actor> Actors { get; } = new List<Actor>()
-        {
-            new Actor() { ActorName = "Thomas Gibson", id = 1, DateOfBirth = 1964 },
-        };
+    public List<TvShow> TvShows { get; } = new List<TvShow>()
+    {
+        new TvShow() { Genre = "FBi", id = 1, Year = 2005, Name = "Criminal Minds" },
+        new TvShow() { Genre = "Crime", id = 2, Year = 2000, Name = "CSI" }
+    };
 
-        // Getter methods to access the data
-        public List<TvShow> GetAllTvShows()
+    public List<Actor> Actors { get; } = new List<Actor>()
+    {
+        new Actor() { ActorName = "Thomas Gibson", id = 1, DateOfBirth = 1964 },
+    };
+
+    // Getter methods to access the data
+    public List<TvShow> GetAllTvShows()
+    {
+        return TvShows;
+    }
+
+    public List<Actor> GetAllActors()
+    {
+        return Actors;
+    }
+
+    public Actor GetActorById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TvShow GetTvShowById(int id)
+    {
+        using (var db = _dbContext)
         {
-            return TvShows;
+            return db.TvShows.FirstOrDefault(x => x.id == id);
         }
 
-        public List<Actor> GetAllActors()
-        {
-            return Actors;
-        }
+    }
+
+    public void CreateTvShow(TvShow tvShow)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CreateActor(Actor actor)
+    {
+        throw new NotImplementedException();
+    }
     }
 }

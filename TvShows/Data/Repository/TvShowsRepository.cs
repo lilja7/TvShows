@@ -3,7 +3,7 @@ using TvShows.Models;
 
 namespace TvShows.Data.Repository;
 
-public class TvShowsRepository
+public class TvShowsRepository : Interpository
 {
     private readonly TvShowDbContext _dbContext;
 
@@ -12,10 +12,20 @@ public class TvShowsRepository
         _dbContext = new TvShowDbContext();
     }
     
-
-    public void CreateTvShow(TvShow tvshow)
+    public List<Actor> GetAllActors()
     {
-        _dbContext.TvShows.Add(tvshow);
+        using (var db = _dbContext)
+        {
+            return db.Actors.ToList();
+        }
+    }
+
+    public Actor GetActorById(int id)
+    {
+        using (var db = _dbContext)
+        {
+            return db.Actors.FirstOrDefault(x => x.id == id);
+        }
     }
     
     public List<TvShow> GetAllTvShows()
@@ -25,12 +35,30 @@ public class TvShowsRepository
             return db.TvShows.ToList();
         }
     }
-
-    public List<Actor> GetAllActors()
+    public TvShow GetTvShowById(int id)
     {
         using (var db = _dbContext)
         {
-            return db.Actors.ToList();
+            return db.TvShows.FirstOrDefault(x => x.id == id);
+        }
+            
+    }
+    public void CreateTvShow(TvShow tvShow)
+    {
+        using (var db = _dbContext)
+        {
+            db.TvShows.Add(tvShow);
+            db.SaveChanges();
         }
     }
+
+    public void CreateActor(Actor actor)
+    {
+        using (var db = _dbContext)
+        {
+            db.Actors.Add(actor);
+            db.SaveChanges();
+        }
+    }
+    
 }

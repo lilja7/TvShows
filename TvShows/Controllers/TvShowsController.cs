@@ -8,27 +8,54 @@ namespace TvShows.Controllers
     [Route("api/tvshows")]
     public class TvShowsController : ControllerBase
     {
-        private readonly MockRepository _repo;
+        private readonly TvShowsRepository _repo;
 
-        public TvShowsController(MockRepository repo)
+        public TvShowsController()
         {
-            _repo = repo;
+            _repo = new TvShowsRepository();
         }
 
-        [HttpGet("all")]
-        public ActionResult<List<TvShow>> GetAllTvShows()
+        [HttpGet]
+        public List<TvShow> GetAllTvShows()
         {
-            var tvShows = _repo.GetAllTvShows();
-            return Ok(tvShows);
+            return _repo.GetAllTvShows();
         }
 
-        [HttpGet("actors")]
-        public ActionResult<List<Actor>> GetAllActors()
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<TvShow> GetTvShowById(int id)
         {
-            var actors = _repo.GetAllActors();
-            return Ok(actors);
+            try
+            {
+                return Ok(_repo.GetTvShowById(id));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CreateTvShow(TvShow tvShow)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _repo.CreateTvShow(tvShow);
+                    return CreatedAtAction(nameof(GetTvShowById), new { id = tvShow.id }, tvShow);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
         }
     }
 
+    // TryCATCH  POST PUT DELETE
 }
-

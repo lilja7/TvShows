@@ -8,6 +8,8 @@ public class TvShowDbContext : DbContext
     public DbSet<Actor> Actors { get; set; }
     public DbSet<TvShow> TvShows { get; set; }
     
+    public DbSet<ActorTvShow> ActorTvShows { get; set; }
+    
     public string DbPath { get; }
     
     public TvShowDbContext()
