@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
-using TvShows.Data.Repository;
+using TvShows.Data;
 using TvShows.Models;
 
 namespace TvShows.Controllers
 {
-    [ApiController]
     [Route("api/tvshows")]
+    [Controller]
     public class TvShowsController : ControllerBase
     {
-        private readonly TvShowsRepository _repo;
+        private readonly IRepository _repo;
 
-        public TvShowsController()
+        public TvShowsController(IRepository repo)
         {
-            _repo = new TvShowsRepository();
+            _repo = repo;
         }
-
+        
+        //Get ALL tvshows
         [HttpGet]
         public ActionResult<List<TvShow>> GetAllTvShows()
         {
@@ -28,7 +29,8 @@ namespace TvShows.Controllers
                 return StatusCode(500);
             }
         }
-
+        
+        //Get tvshow by id
         [HttpGet]
         [Route("{id}")]
         public ActionResult<TvShow> GetTvShowById(int id)
@@ -42,9 +44,10 @@ namespace TvShows.Controllers
                 return StatusCode(500);
             }
         }
-
+        
+        //Create tvshow
         [HttpPost]
-        public IActionResult CreateTvShow(TvShow tvShow)
+        public IActionResult CreateTvShow([FromBody] TvShow tvShow)
         {
             try
             {
@@ -55,8 +58,50 @@ namespace TvShows.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest(ModelState);
                 }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+        }
+        
+        //Update tvshow
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult UpdateTvShow(int id, TvShow tvShow)
+        {
+          
+            try
+            {
+                TvShow updatedTvShow = _repo.UpdateTvShow(id, tvShow);
+                
+                if (updatedTvShow == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return  CreatedAtAction(nameof(GetTvShowById), new { id = updatedTvShow.id }, updatedTvShow);
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+        }
+        
+        //Delete tvshow
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteTvShow(int id)
+        {
+            try
+            {
+                _repo.DeleteTvShow(id);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -65,5 +110,4 @@ namespace TvShows.Controllers
         }
     }
 
-    // TryCATCH  POST PUT DELETE
 }

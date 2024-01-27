@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Query;
 using TvShows.Models;
 
 namespace TvShows.Data.Repository
@@ -25,6 +26,11 @@ namespace TvShows.Data.Repository
         return TvShows;
     }
 
+    public TvShow UpdateTvShow(int id, TvShow tvShow)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<Actor> GetAllActors()
     {
         return Actors;
@@ -35,7 +41,12 @@ namespace TvShows.Data.Repository
         throw new NotImplementedException();
     }
 
-    public TvShow GetTvShowById(int id)
+    public Actor UpdateActor(int id, Actor actor)
+    {
+        throw new NotImplementedException();
+    }
+
+    public TvShow? GetTvShowById(int id)
     {
         using (var db = _dbContext)
         {
@@ -50,6 +61,16 @@ namespace TvShows.Data.Repository
     }
 
     public void CreateActor(Actor actor)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteTvShow(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteActor(int id)
     {
         throw new NotImplementedException();
     }
