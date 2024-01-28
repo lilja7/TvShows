@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Query;
 using TvShows.Models;
+using TvShows.Models.DTO;
 
 namespace TvShows.Data.Repository
 {
@@ -15,9 +16,9 @@ namespace TvShows.Data.Repository
         new TvShow() { Genre = "Crime", id = 2, Year = 2000, Name = "CSI" }
     };
 
-    public List<Actor> Actors { get; } = new List<Actor>()
+    public List<ActorDTO> Actors { get; } = new List<ActorDTO>()
     {
-        new Actor() { ActorName = "Thomas Gibson", id = 1, DateOfBirth = 1964 },
+        new ActorDTO() { ActorName = "Thomas Gibson", id = 1 },
     };
 
     // Getter methods to access the data
@@ -31,12 +32,12 @@ namespace TvShows.Data.Repository
         throw new NotImplementedException();
     }
 
-    public List<Actor> GetAllActors()
+    public List<ActorDTO> GetAllActors()
     {
         return Actors;
     }
 
-    public Actor GetActorById(int id)
+    public ActorDTO GetActorById(int id)
     {
         throw new NotImplementedException();
     }
@@ -65,12 +66,12 @@ namespace TvShows.Data.Repository
         throw new NotImplementedException();
     }
 
-    public void DeleteTvShow(int id)
+    public bool DeleteTvShow(int id)
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteActor(int id)
+    public bool DeleteActor(int id)
     {
         throw new NotImplementedException();
     }

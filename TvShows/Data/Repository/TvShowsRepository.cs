@@ -1,32 +1,34 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using TvShows.Models;
+using TvShows.Models.DTO;
+using AutoMapper;
 
 namespace TvShows.Data.Repository;
 
 public class TvShowsRepository : IRepository
 {
+    private readonly IMapper _mapper;
     private readonly TvShowDbContext _dbContext;
+    
 
-    public TvShowsRepository()
+    public TvShowsRepository(IMapper mapper)
     {
+        _mapper = mapper;
         _dbContext = new TvShowDbContext();
     }
-
     public TvShow UpdateTvShow(int id, TvShow tvshow)
     {
         TvShow tvShowToUpdate;
         using (var db = _dbContext)
         {
             tvShowToUpdate = db.TvShows.FirstOrDefault(x => x.id == id);
-            
+
             if (tvShowToUpdate == null)
             {
                 return null;
             }
 
             tvShowToUpdate.Name = tvshow.Name;
-            tvShowToUpdate.Actors = tvshow.Actors;
             tvShowToUpdate.Year = tvshow.Year;
             tvShowToUpdate.Genre = tvshow.Genre;
 
@@ -34,15 +36,15 @@ public class TvShowsRepository : IRepository
 
             return tvShowToUpdate;
         }
-        
     }
+
     public Actor UpdateActor(int id, Actor actor)
     {
         Actor actorToUpdate;
         using (var db = _dbContext)
         {
             actorToUpdate = db.Actors.FirstOrDefault(x => x.id == id);
-            
+
             if (actorToUpdate == null)
             {
                 return null;
@@ -50,7 +52,6 @@ public class TvShowsRepository : IRepository
 
             actorToUpdate.ActorName = actor.ActorName;
             actorToUpdate.DateOfBirth = actor.DateOfBirth;
-            actorToUpdate.TvShows = actor.TvShows;
 
             db.SaveChanges();
 
@@ -58,22 +59,39 @@ public class TvShowsRepository : IRepository
         }
     }
 
-    public List<Actor> GetAllActors()
+    public List<ActorDTO> GetAllActors()
     {
-        using (var db = _dbContext)
+        try
         {
-            return db.Actors.Include(x => x.TvShows).ToList();
+            List<ActorDTO> actorsDtoList;
+
+            using (var db = _dbContext)
+            {
+                var actors = db.Actors.Include(x => x.TvShows).ToList();
+                actorsDtoList = _mapper.Map<List<ActorDTO>>(actors);
+            }
+
+            return actorsDtoList;
+        }
+        catch (Exception e)
+        {
+            throw new Exception();
         }
     }
 
-    public Actor GetActorById(int id)
+    public ActorDTO GetActorById(int id)
     {
+       
+        
         using (var db = _dbContext)
         {
-            return db.Actors.Include(x => x.TvShows).FirstOrDefault(x => x.id == id);
+            Actor actor = db.Actors.Include(x => x.TvShows).FirstOrDefault(x => x.id == id);
+            ActorDTO actorToReturn = _mapper.Map<ActorDTO>(actor);
+            return actorToReturn;
         }
+        
     }
-    
+
 
     public List<TvShow> GetAllTvShows()
     {
@@ -82,21 +100,23 @@ public class TvShowsRepository : IRepository
             return db.TvShows.Include(x => x.Actors).ToList();
         }
     }
+
     public TvShow GetTvShowById(int id)
     {
         using (var db = _dbContext)
         {
-            return db.TvShows.Include(a => a.Actors).FirstOrDefault(x => x.id == id);
+            TvShow tv = db.TvShows.Include(a => a.Actors).FirstOrDefault(x => x.id == id);
+            return tv;
         }
-            
     }
+
     public void CreateTvShow(TvShow tvShow)
     {
         using (var db = _dbContext)
         {
             db.TvShows.Add(tvShow);
             db.SaveChanges();
-        } 
+        }
     }
 
     public void CreateActor(Actor actor)
@@ -108,13 +128,40 @@ public class TvShowsRepository : IRepository
         }
     }
 
-    public void DeleteTvShow(int id)
+    public bool DeleteTvShow(int id)
     {
-        throw new NotImplementedException();
+        TvShow tvShowToDelete;
+        using (var db = _dbContext)
+        {
+            tvShowToDelete = db.TvShows.FirstOrDefault(x => x.id == id);
+            if (tvShowToDelete == null)
+            {
+                return false;
+            }
+            else
+            {
+                db.TvShows.Remove(tvShowToDelete);
+                db.SaveChanges();
+                return true;
+            }
+        }
     }
 
-    public void DeleteActor(int id)
+    public bool DeleteActor(int id)
     {
-        throw new NotImplementedException();
+        using (var db = _dbContext)
+        {
+            var actorToDelete = db.Actors.FirstOrDefault(x => x.id == id);
+            if (actorToDelete == null)
+            {
+                return false;
+            }
+            else
+            {
+                db.Actors.Remove(actorToDelete);
+                db.SaveChanges();
+                return true;
+            }
+        }
     }
 }

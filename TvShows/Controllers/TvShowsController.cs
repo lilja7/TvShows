@@ -24,7 +24,7 @@ namespace TvShows.Controllers
                 var tvShows = _repo.GetAllTvShows();
                 return Ok(tvShows);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
@@ -37,9 +37,17 @@ namespace TvShows.Controllers
         {
             try
             {
-                return Ok(_repo.GetTvShowById(id));
+                TvShow tvShow = _repo.GetTvShowById(id);
+                if (tvShow == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(tvShow);
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
@@ -61,7 +69,7 @@ namespace TvShows.Controllers
                     return BadRequest(ModelState);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
@@ -70,7 +78,7 @@ namespace TvShows.Controllers
         //Update tvshow
         [HttpPut]
         [Route("{id}")]
-        public IActionResult UpdateTvShow(int id, TvShow tvShow)
+        public IActionResult UpdateTvShow(int id, [FromBody]TvShow tvShow)
         {
           
             try
@@ -87,7 +95,7 @@ namespace TvShows.Controllers
                     
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
@@ -96,14 +104,21 @@ namespace TvShows.Controllers
         //Delete tvshow
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteTvShow(int id)
+        public ActionResult<TvShow> DeleteTvShow(int id)
         {
             try
             {
-                _repo.DeleteTvShow(id);
-                return Ok();
+                bool deleted = _repo.DeleteTvShow(id);
+                if (!deleted)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500);
             }
