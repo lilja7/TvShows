@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TvShows.Data;
 using TvShows.Models;
+using TvShows.Models.DTO;
 
 namespace TvShows.Controllers
 {
@@ -17,11 +19,11 @@ namespace TvShows.Controllers
         
         //Get ALL tvshows
         [HttpGet]
-        public ActionResult<List<TvShow>> GetAllTvShows()
+        public async Task<ActionResult<List<TvShow>>> GetAllTvShows()
         {
             try
             {
-                var tvShows = _repo.GetAllTvShows();
+                var tvShows = await _repo.GetAllTvShowsAsync();
                 return Ok(tvShows);
             }
             catch (Exception)
@@ -33,11 +35,11 @@ namespace TvShows.Controllers
         //Get tvshow by id
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<TvShow> GetTvShowById(int id)
+        public async Task<ActionResult<TvShowDTO>> GetTvShowById(int id)
         {
             try
             {
-                TvShow tvShow = _repo.GetTvShowById(id);
+                TvShowDTO tvShow = await _repo.GetTvShowByIdAsync(id);
                 if (tvShow == null)
                 {
                     return NotFound();
@@ -55,13 +57,13 @@ namespace TvShows.Controllers
         
         //Create tvshow
         [HttpPost]
-        public IActionResult CreateTvShow([FromBody] TvShow tvShow)
+        public async Task<IActionResult> CreateTvShow([FromBody] TvShow tvShow)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _repo.CreateTvShow(tvShow);
+                    await _repo.CreateTvShowAsync(tvShow);
                     return CreatedAtAction(nameof(GetTvShowById), new { id = tvShow.id }, tvShow);
                 }
                 else
@@ -78,12 +80,12 @@ namespace TvShows.Controllers
         //Update tvshow
         [HttpPut]
         [Route("{id}")]
-        public IActionResult UpdateTvShow(int id, [FromBody]TvShow tvShow)
+        public async Task<IActionResult> UpdateTvShow(int id, [FromBody]TvShow tvShow)
         {
           
             try
             {
-                TvShow updatedTvShow = _repo.UpdateTvShow(id, tvShow);
+                TvShow updatedTvShow = await _repo.UpdateTvShowAsync(id, tvShow);
                 
                 if (updatedTvShow == null)
                 {
@@ -91,7 +93,7 @@ namespace TvShows.Controllers
                 }
                 else
                 {
-                    return  CreatedAtAction(nameof(GetTvShowById), new { id = updatedTvShow.id }, updatedTvShow);
+                    return CreatedAtAction(nameof(GetTvShowById), new { id = updatedTvShow.id }, updatedTvShow);
                     
                 }
             }
@@ -104,11 +106,11 @@ namespace TvShows.Controllers
         //Delete tvshow
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult<TvShow> DeleteTvShow(int id)
+        public async Task<ActionResult<TvShow>> DeleteTvShow(int id)
         {
             try
             {
-                bool deleted = _repo.DeleteTvShow(id);
+                bool deleted = await _repo.DeleteTvShowAsync(id);
                 if (!deleted)
                 {
                     return NotFound();

@@ -13,7 +13,8 @@ namespace TvShows.Data.Repository
     public List<TvShow> TvShows { get; } = new List<TvShow>()
     {
         new TvShow() { Genre = "FBi", id = 1, Year = 2005, Name = "Criminal Minds" },
-        new TvShow() { Genre = "Crime", id = 2, Year = 2000, Name = "CSI" }
+        new TvShow() { Genre = "Crime", id = 2, Year = 2000, Name = "CSI" },
+        new TvShow() { Genre = "Comedy", id = 3, Year = 2007, Name = "The Big Bang Theory" },
     };
 
     public List<ActorDTO> Actors { get; } = new List<ActorDTO>()
@@ -22,56 +23,56 @@ namespace TvShows.Data.Repository
     };
 
     // Getter methods to access the data
-    public List<TvShow> GetAllTvShows()
+    public async Task<List<TvShowDTO>> GetAllTvShowsAsync()
     {
-        return TvShows;
+        throw new NotImplementedException();
+
     }
 
-    public TvShow UpdateTvShow(int id, TvShow tvShow)
+    public async Task<TvShow> UpdateTvShowAsync(int id, TvShow tvShow)
     {
         throw new NotImplementedException();
     }
 
-    public List<ActorDTO> GetAllActors()
+    public async Task<List<ActorDTO>> GetAllActorsAsync()
     {
         return Actors;
     }
+    
 
-    public ActorDTO GetActorById(int id)
+    public async Task<ActorDTO> GetActorByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Actor UpdateActor(int id, Actor actor)
+    public Task<Actor> UpdateActorAsync(int id, Actor actor)
+    {
+        throw new NotImplementedException();
+    }
+    
+
+    public Task<TvShowDTO> GetTvShowByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+
+    }
+
+    public Task CreateTvShowAsync(TvShow tvShow)
     {
         throw new NotImplementedException();
     }
 
-    public TvShow? GetTvShowById(int id)
-    {
-        using (var db = _dbContext)
-        {
-            return db.TvShows.FirstOrDefault(x => x.id == id);
-        }
-
-    }
-
-    public void CreateTvShow(TvShow tvShow)
+    public Task CreateActorAsync(Actor actor)
     {
         throw new NotImplementedException();
     }
 
-    public void CreateActor(Actor actor)
+    public Task<bool> DeleteTvShowAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public bool DeleteTvShow(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool DeleteActor(int id)
+    public Task<bool> DeleteActorAsync(int id)
     {
         throw new NotImplementedException();
     }

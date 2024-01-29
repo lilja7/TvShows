@@ -9,19 +9,19 @@ public class TvShowsRepository : IRepository
 {
     private readonly IMapper _mapper;
     private readonly TvShowDbContext _dbContext;
-    
 
     public TvShowsRepository(IMapper mapper)
     {
         _mapper = mapper;
         _dbContext = new TvShowDbContext();
     }
-    public TvShow UpdateTvShow(int id, TvShow tvshow)
+
+    public async Task<TvShow> UpdateTvShowAsync(int id, TvShow tvshow)
     {
         TvShow tvShowToUpdate;
         using (var db = _dbContext)
         {
-            tvShowToUpdate = db.TvShows.FirstOrDefault(x => x.id == id);
+            tvShowToUpdate = await db.TvShows.FirstOrDefaultAsync(x => x.id == id);
 
             if (tvShowToUpdate == null)
             {
@@ -32,18 +32,18 @@ public class TvShowsRepository : IRepository
             tvShowToUpdate.Year = tvshow.Year;
             tvShowToUpdate.Genre = tvshow.Genre;
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return tvShowToUpdate;
         }
     }
 
-    public Actor UpdateActor(int id, Actor actor)
+    public async Task<Actor> UpdateActorAsync(int id, Actor actor)
     {
         Actor actorToUpdate;
         using (var db = _dbContext)
         {
-            actorToUpdate = db.Actors.FirstOrDefault(x => x.id == id);
+            actorToUpdate = await db.Actors.Include(t => t.TvShows).FirstOrDefaultAsync(x => x.id == id);
 
             if (actorToUpdate == null)
             {
@@ -52,88 +52,79 @@ public class TvShowsRepository : IRepository
 
             actorToUpdate.ActorName = actor.ActorName;
             actorToUpdate.DateOfBirth = actor.DateOfBirth;
-
-            db.SaveChanges();
+            
+            await db.SaveChangesAsync();
 
             return actorToUpdate;
         }
     }
 
-    public List<ActorDTO> GetAllActors()
+    public async Task<List<ActorDTO>> GetAllActorsAsync()
     {
-        try
-        {
-            List<ActorDTO> actorsDtoList;
+        List<ActorDTO> actorsDtoList;
 
-            using (var db = _dbContext)
-            {
-                var actors = db.Actors.Include(x => x.TvShows).ToList();
-                actorsDtoList = _mapper.Map<List<ActorDTO>>(actors);
-            }
-
-            return actorsDtoList;
-        }
-        catch (Exception e)
-        {
-            throw new Exception();
-        }
-    }
-
-    public ActorDTO GetActorById(int id)
-    {
-       
-        
         using (var db = _dbContext)
         {
-            Actor actor = db.Actors.Include(x => x.TvShows).FirstOrDefault(x => x.id == id);
+            var actors = await db.Actors.Include(x => x.TvShows).ToListAsync();
+            actorsDtoList = _mapper.Map<List<ActorDTO>>(actors);
+        }
+
+        return actorsDtoList;
+    }
+
+    public async Task<ActorDTO> GetActorByIdAsync(int id)
+    {
+        using (var db = _dbContext)
+        {
+            Actor actor = await db.Actors.Include(x => x.TvShows).FirstOrDefaultAsync(x => x.id == id);
             ActorDTO actorToReturn = _mapper.Map<ActorDTO>(actor);
             return actorToReturn;
         }
-        
     }
 
-
-    public List<TvShow> GetAllTvShows()
+    public async Task<List<TvShowDTO>> GetAllTvShowsAsync()
     {
         using (var db = _dbContext)
         {
-            return db.TvShows.Include(x => x.Actors).ToList();
+            var tvShows = await db.TvShows.Include(x => x.Actors).ToListAsync();
+            var tvShowsDTO = _mapper.Map<List<TvShowDTO>>(tvShows);
+            return tvShowsDTO;
         }
     }
 
-    public TvShow GetTvShowById(int id)
+    public async Task<TvShowDTO> GetTvShowByIdAsync(int id)
     {
         using (var db = _dbContext)
         {
-            TvShow tv = db.TvShows.Include(a => a.Actors).FirstOrDefault(x => x.id == id);
-            return tv;
+            TvShow tv = await db.TvShows.Include(a => a.Actors).FirstOrDefaultAsync(x => x.id == id);
+            return _mapper.Map<TvShowDTO>(tv);
         }
     }
 
-    public void CreateTvShow(TvShow tvShow)
+    public async Task CreateTvShowAsync(TvShow tvShow)
     {
         using (var db = _dbContext)
         {
-            db.TvShows.Add(tvShow);
-            db.SaveChanges();
+            await db.TvShows.AddAsync(tvShow);
+            await db.SaveChangesAsync();
         }
     }
 
-    public void CreateActor(Actor actor)
+    public async Task CreateActorAsync(Actor actor)
     {
         using (var db = _dbContext)
         {
-            db.Actors.Add(actor);
-            db.SaveChanges();
+            await db.Actors.AddAsync(actor);
+            await db.SaveChangesAsync();
         }
     }
 
-    public bool DeleteTvShow(int id)
+    public async Task<bool> DeleteTvShowAsync(int id)
     {
         TvShow tvShowToDelete;
         using (var db = _dbContext)
         {
-            tvShowToDelete = db.TvShows.FirstOrDefault(x => x.id == id);
+            tvShowToDelete = await db.TvShows.FirstOrDefaultAsync(x => x.id == id);
             if (tvShowToDelete == null)
             {
                 return false;
@@ -141,17 +132,17 @@ public class TvShowsRepository : IRepository
             else
             {
                 db.TvShows.Remove(tvShowToDelete);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return true;
             }
         }
     }
 
-    public bool DeleteActor(int id)
+    public async Task<bool> DeleteActorAsync(int id)
     {
         using (var db = _dbContext)
         {
-            var actorToDelete = db.Actors.FirstOrDefault(x => x.id == id);
+            var actorToDelete = await db.Actors.FirstOrDefaultAsync(x => x.id == id);
             if (actorToDelete == null)
             {
                 return false;
@@ -159,7 +150,7 @@ public class TvShowsRepository : IRepository
             else
             {
                 db.Actors.Remove(actorToDelete);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return true;
             }
         }
