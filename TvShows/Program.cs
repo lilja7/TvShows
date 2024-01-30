@@ -35,6 +35,7 @@ var app = builder.Build();
 
 app.UseDeveloperExceptionPage();
 
+
 // Configure the HTTP request pipeline.
 if (builder.Environment.IsDevelopment())
 {

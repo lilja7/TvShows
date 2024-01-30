@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using TvShows.Models.DTO;
 
@@ -15,6 +17,9 @@ public class Actor
     public String ActorName { get; set; }
     [Required]
     public int DateOfBirth { get; set; }
+    
+    public string FavoriteColor { get; set; }
+    
     [System.Text.Json.Serialization.JsonIgnore]
     public List<TvShow> TvShows { get; set; } 
     

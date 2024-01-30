@@ -1,4 +1,6 @@
 
+using Newtonsoft.Json;
+
 namespace TvShows.Models.DTO;
 
 public class TvShowDTO
@@ -12,7 +14,9 @@ public class TvShowDTO
     public String Name { get; set; }
 
     public int Year { get; set; }
-    public List<Actor> Actors { get; set; }
-
+    
     public String Genre { get; set; }
+    
+    public List<Actor> Actors { get; set; }
+    
 }

@@ -52,6 +52,7 @@ public class TvShowsRepository : IRepository
 
             actorToUpdate.ActorName = actor.ActorName;
             actorToUpdate.DateOfBirth = actor.DateOfBirth;
+            actorToUpdate.FavoriteColor = actor.FavoriteColor;
             
             await db.SaveChangesAsync();
 

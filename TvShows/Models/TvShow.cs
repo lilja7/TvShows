@@ -17,9 +17,11 @@ public class TvShow
     public String Name { get; set; }
     [Required]
     public int Year { get; set; }
-    [System.Text.Json.Serialization.JsonIgnore]
-    public List<Actor> Actors { get; set; }
     [Required]
     public String Genre { get; set; }
+    
+    [Newtonsoft.Json.JsonIgnore]
+    public List<Actor> Actors { get; set; }
+  
 
 }

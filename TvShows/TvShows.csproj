@@ -30,6 +30,8 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="my-react-app\package.json" />
       <_ContentIncludedByDefault Remove="Pages\RazorPage.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Page1.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\index.razor" />
     </ItemGroup>
 
 </Project>

@@ -18,13 +18,13 @@ namespace TvShows.Migrations
 
             modelBuilder.Entity("ActorTvShow", b =>
                 {
-                    b.Property<int>("Actorsid")
+                    b.Property<int>("ActorsId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TvShowsid")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Actorsid", "TvShowsid");
+                    b.HasKey("ActorsId", "TvShowsid");
 
                     b.HasIndex("TvShowsid");
 
@@ -33,7 +33,7 @@ namespace TvShows.Migrations
 
             modelBuilder.Entity("TvShows.Models.Actor", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -44,7 +44,11 @@ namespace TvShows.Migrations
                     b.Property<int>("DateOfBirth")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.Property<string>("FavoriteColor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Actors");
                 });
@@ -75,7 +79,7 @@ namespace TvShows.Migrations
                 {
                     b.HasOne("TvShows.Models.Actor", null)
                         .WithMany()
-                        .HasForeignKey("Actorsid")
+                        .HasForeignKey("ActorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
