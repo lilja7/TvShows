@@ -67,6 +67,9 @@ namespace TvShows.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Year")
                         .HasColumnType("INTEGER");
 

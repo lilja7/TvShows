@@ -31,6 +31,7 @@ public class TvShowsRepository : IRepository
             tvShowToUpdate.Name = tvshow.Name;
             tvShowToUpdate.Year = tvshow.Year;
             tvShowToUpdate.Genre = tvshow.Genre;
+            tvShowToUpdate.Rating = tvshow.Rating;
 
             await db.SaveChangesAsync();
 
