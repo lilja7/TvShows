@@ -43,7 +43,7 @@ public class TvShowsRepository : IRepository
         Actor actorToUpdate;
         using (var db = _dbContext)
         {
-            actorToUpdate = await db.Actors.Include(t => t.TvShows).FirstOrDefaultAsync(x => x.id == id);
+            actorToUpdate = await db.Actors.Include(t => t.TvShows).FirstOrDefaultAsync(x => x.Id == id);
 
             if (actorToUpdate == null)
             {
@@ -76,7 +76,7 @@ public class TvShowsRepository : IRepository
     {
         using (var db = _dbContext)
         {
-            Actor actor = await db.Actors.Include(x => x.TvShows).FirstOrDefaultAsync(x => x.id == id);
+            Actor actor = await db.Actors.Include(x => x.TvShows).FirstOrDefaultAsync(x => x.Id == id);
             ActorDTO actorToReturn = _mapper.Map<ActorDTO>(actor);
             return actorToReturn;
         }
@@ -142,7 +142,7 @@ public class TvShowsRepository : IRepository
     {
         using (var db = _dbContext)
         {
-            var actorToDelete = await db.Actors.FirstOrDefaultAsync(x => x.id == id);
+            var actorToDelete = await db.Actors.FirstOrDefaultAsync(x => x.Id == id);
             if (actorToDelete == null)
             {
                 return false;

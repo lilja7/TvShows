@@ -19,7 +19,7 @@ namespace TvShows.Data.Repository
 
     public List<ActorDTO> Actors { get; } = new List<ActorDTO>()
     {
-        new ActorDTO() { ActorName = "Thomas Gibson", id = 1 },
+        new ActorDTO() { ActorName = "Thomas Gibson", Id = 1 },
     };
 
     // Getter methods to access the data
