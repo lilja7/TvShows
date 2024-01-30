@@ -11,6 +11,7 @@ public class ActorDTO
     public String ActorName { get; set; }
     
     public int DateOfBirth { get; set; }
-    public List<TvShowDTO>? TvShows { get; set; }
+    
+    public List<TvShowDTO> TvShows { get; set; }
     
 }

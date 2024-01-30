@@ -15,7 +15,7 @@ public class Actor
     public String ActorName { get; set; }
     [Required]
     public int DateOfBirth { get; set; }
-    [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public List<TvShow> TvShows { get; set; } 
     
     
