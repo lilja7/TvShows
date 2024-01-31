@@ -79,8 +79,8 @@ public class TvShowsRepository : IRepository
         using (var db = _dbContext)
         {
             Actor actor = await db.Actors.Include(x => x.TvShows).FirstOrDefaultAsync(x => x.Id == id);
-            ActorDTO actorToReturn = _mapper.Map<ActorDTO>(actor);
-            return actorToReturn;
+            return _mapper.Map<ActorDTO>(actor);
+            
         }
     }
 
