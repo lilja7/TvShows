@@ -64,7 +64,7 @@ namespace TvShows.Controllers
                 if (ModelState.IsValid)
                 {
                     await _repo.CreateTvShowAsync(tvShow);
-                    return CreatedAtAction(nameof(GetTvShowById), new { id = tvShow.id }, tvShow);
+                    return CreatedAtAction(nameof(GetTvShowById), new { id = tvShow.Id }, tvShow);
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace TvShows.Controllers
                 }
                 else
                 {
-                    return CreatedAtAction(nameof(GetTvShowById), new { id = updatedTvShow.id }, updatedTvShow);
+                    return CreatedAtAction(nameof(GetTvShowById), new { id = updatedTvShow.Id }, updatedTvShow);
                     
                 }
             }

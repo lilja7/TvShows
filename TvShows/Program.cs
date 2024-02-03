@@ -48,4 +48,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+TvShowDbContext.SeedDBase();
+
+
 app.Run();

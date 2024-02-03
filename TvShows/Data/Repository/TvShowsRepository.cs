@@ -19,9 +19,10 @@ public class TvShowsRepository : IRepository
     public async Task<TvShow> UpdateTvShowAsync(int id, TvShow tvshow)
     {
         TvShow tvShowToUpdate;
+        
         using (var db = _dbContext)
         {
-            tvShowToUpdate = await db.TvShows.FirstOrDefaultAsync(x => x.id == id);
+            tvShowToUpdate = await db.TvShows.FirstOrDefaultAsync(x => x.Id == id);
 
             if (tvShowToUpdate == null)
             {
@@ -89,8 +90,8 @@ public class TvShowsRepository : IRepository
         using (var db = _dbContext)
         {
             var tvShows = await db.TvShows.Include(x => x.Actors).ToListAsync();
-            var tvShowsDTO = _mapper.Map<List<TvShowDTO>>(tvShows);
-            return tvShowsDTO;
+            return  _mapper.Map<List<TvShowDTO>>(tvShows);
+            
         }
     }
 
@@ -98,7 +99,7 @@ public class TvShowsRepository : IRepository
     {
         using (var db = _dbContext)
         {
-            TvShow tv = await db.TvShows.Include(a => a.Actors).FirstOrDefaultAsync(x => x.id == id);
+            TvShow tv = await db.TvShows.Include(a => a.Actors).FirstOrDefaultAsync(x => x.Id == id);
             return _mapper.Map<TvShowDTO>(tv);
         }
     }
@@ -126,7 +127,7 @@ public class TvShowsRepository : IRepository
         TvShow tvShowToDelete;
         using (var db = _dbContext)
         {
-            tvShowToDelete = await db.TvShows.FirstOrDefaultAsync(x => x.id == id);
+            tvShowToDelete = await db.TvShows.FirstOrDefaultAsync(x => x.Id == id);
             if (tvShowToDelete == null)
             {
                 return false;

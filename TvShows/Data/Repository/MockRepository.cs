@@ -12,9 +12,9 @@ namespace TvShows.Data.Repository
 
     public List<TvShow> TvShows { get; } = new List<TvShow>()
     {
-        new TvShow() { Genre = "FBi", id = 1, Year = 2005, Name = "Criminal Minds" },
-        new TvShow() { Genre = "Crime", id = 2, Year = 2000, Name = "CSI" },
-        new TvShow() { Genre = "Comedy", id = 3, Year = 2007, Name = "The Big Bang Theory" },
+        new TvShow() { Genre = "FBi", Id = 1, Year = 2005, Name = "Criminal Minds" },
+        new TvShow() { Genre = "Crime", Id = 2, Year = 2000, Name = "CSI" },
+        new TvShow() { Genre = "Comedy", Id = 3, Year = 2007, Name = "The Big Bang Theory" },
     };
 
     public List<ActorDTO> Actors { get; } = new List<ActorDTO>()

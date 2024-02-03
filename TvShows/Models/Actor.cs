@@ -13,16 +13,20 @@ public class Actor
         TvShows = new List<TvShow>();
     }
     public int Id { get; set; }
+    
     [Required]
     [MaxLength(255)]
     public String ActorName { get; set; }
+    
     [Required]
     public int DateOfBirth { get; set; }
+    
     [MaxLength(30)]
     public string FavoriteColor { get; set; }
     
     [System.Text.Json.Serialization.JsonIgnore]
-    public List<TvShow> TvShows { get; set; } 
+    public List<TvShow> TvShows { get; set; }
+    
     
     
 }
